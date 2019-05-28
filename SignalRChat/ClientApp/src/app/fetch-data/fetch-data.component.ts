@@ -4,21 +4,23 @@ import { SignalRService } from '../signal-r.service';
 
 @Component({
   selector: 'app-fetch-data',
-  templateUrl: './fetch-data.component.html'
+  templateUrl: './fetch-data.component.html',
+  providers: [SignalRService]
 })
 export class FetchDataComponent {
   constructor(public signalRService: SignalRService, private http: HttpClient) { }
 
   ngOnInit() {
     this.signalRService.startConnection();
-    this.signalRService.addTransferChartDataListener();
+    this.signalRService.addTransferDataListener();
     this.startHttpRequest();
   }
 
   private startHttpRequest = () => {
-    this.http.get('https://localhost:5001/api/chart')
+    console.log("startHttpRequest");
+    this.http.get('https://localhost:5001/api/chat')
       .subscribe(res => {
-        console.log(res);
+        console.log("startHttpRequest " + res);
       })
   }
 }
