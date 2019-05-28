@@ -1,23 +1,24 @@
-import { Component, Inject } from '@angular/core';
+﻿import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { SignalRService } from '../signal-r.service';
 
 @Component({
   selector: 'app-fetch-data',
   templateUrl: './fetch-data.component.html'
 })
 export class FetchDataComponent {
-  public forecasts: WeatherForecast[];
+  constructor(public signalRService: SignalRService, private http: HttpClient) { }
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<WeatherForecast[]>(baseUrl + 'api/SampleData/WeatherForecasts').subscribe(result => {
-      this.forecasts = result;
-    }, error => console.error(error));
+  ngOnInit() {
+    this.signalRService.startConnection();
+    this.signalRService.addTransferChartDataListener();
+    this.startHttpRequest();
   }
-}
 
-interface WeatherForecast {
-  dateFormatted: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
+  private startHttpRequest = () => {
+    this.http.get('https://localhost:5001/api/chart')
+      .subscribe(res => {
+        console.log(res);
+      })
+  }
 }

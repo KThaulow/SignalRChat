@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SignalRChat.Model.Hubs;
 
 namespace SignalRChat
 {
@@ -21,6 +21,7 @@ namespace SignalRChat
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			services.AddSignalR();
 
 			// In production, the Angular files will be served from this directory
 			services.AddSpaStaticFiles(configuration =>
@@ -43,7 +44,7 @@ namespace SignalRChat
 			}
 
 			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+			app.UseDefaultFiles();
 			app.UseSpaStaticFiles();
 
 			app.UseMvc(routes =>
@@ -64,6 +65,11 @@ namespace SignalRChat
 				{
 					spa.UseAngularCliServer(npmScript: "start");
 				}
+			});
+
+			app.UseSignalR(options =>
+			{
+				options.MapHub<ChatHub>("/hub");
 			});
 		}
 	}
