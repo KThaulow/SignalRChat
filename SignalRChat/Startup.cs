@@ -23,6 +23,15 @@ namespace SignalRChat
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSignalR();
 
+			services.AddCors(options =>
+			{
+				options.AddPolicy("CorsPolicy",
+					builder => builder.WithOrigins("http://localhost:4200")
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials());
+			});
+
 			// In production, the Angular files will be served from this directory
 			services.AddSpaStaticFiles(configuration =>
 			{
@@ -42,6 +51,8 @@ namespace SignalRChat
 				app.UseExceptionHandler("/Error");
 				app.UseHsts();
 			}
+
+			app.UseCors("CorsPolicy");
 
 			app.UseHttpsRedirection();
 			app.UseDefaultFiles();

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using SignalRChat.Model;
 using SignalRChat.Model.Hubs;
-using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,19 +10,29 @@ namespace SignalRChat.Controllers
 	[Route("api/[controller]")]
 	public class ChatController : Controller
 	{
-		private readonly IHubContext<ChatHub> _chatHub;
+		private readonly IHubContext<ChatHub> _hub;
 
 		public ChatController(IHubContext<ChatHub> hub)
 		{
-			_chatHub = hub;
+			_hub = hub;
 		}
 
-		// GET: api/<controller>
-		[HttpGet]
-		public IEnumerable<string> Get()
+
+		public IActionResult Get()
 		{
-			return new string[] { "value1", "value2" };
+			var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferdata", DataManager.GetData()));
+
+			return Ok(new { Message = "Request Completed" });
 		}
+
+		//// GET: api/<controller>
+		//[HttpGet]
+		//public async Task<IActionResult> Get()
+		//{
+		//	await _hub.Clients.All.SendAsync("transferdata", "Hejsa");
+
+		//	return Ok(new { Message = "Request Completed" });
+		//}
 
 		// GET api/<controller>/5
 		[HttpGet("{id}")]
