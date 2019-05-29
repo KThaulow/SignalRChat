@@ -21,6 +21,9 @@ export class FetchDataComponent {
     this.http.get('https://localhost:5001/api/chat')
       .subscribe(res => {
         console.log("startHttpRequest " + res);
+        console.log(res.toString());
+        var str = res as string;
+        console.log(str);
       })
   }
 }
