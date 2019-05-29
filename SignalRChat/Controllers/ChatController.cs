@@ -20,7 +20,8 @@ namespace SignalRChat.Controllers
 
 		public IActionResult Get()
 		{
-			var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferdata", DataManager.GetData()));
+			//var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferdata", DataManager.GetData()));
+			var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferdata", "Dette er noget data"));
 
 			return Ok(new { Message = "Request Completed" });
 		}
