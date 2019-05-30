@@ -14,12 +14,26 @@ export class AppComponent {
     this.signalRService.startConnection();
     this.signalRService.addTransferChartDataListener();
     this.startHttpRequest();
+
+    this.signalRService.addChatMessageListener('kristian');
+    this.sendMessage();
   }
+
 
   private startHttpRequest = () => {
     this.http.get('http://localhost:5000/api/chart')
       .subscribe(res => {
         console.log(res);
       })
+  }
+
+  private sendMessage = () => {
+    var senderChatMessage = {
+      Sender: "Tom",
+      Receiver: "Hanks",
+      Message: "Message"
+    };
+
+    this.http.post('http://localhost:5000/api/chat/sendmessage', senderChatMessage).subscribe();
   }
 }
