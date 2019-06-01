@@ -11,7 +11,10 @@ export class AppComponent {
   constructor(public signalRService: SignalRService, private http: HttpClient) { }
 
   ngOnInit() {
-    this.signalRService.startConnection();
+
+    var token = this.login();
+
+    this.signalRService.startConnection("");
     this.signalRService.addTransferChartDataListener();
     this.startHttpRequest();
 
@@ -35,5 +38,26 @@ export class AppComponent {
     };
 
     this.http.post('http://localhost:5000/api/chat/sendmessage', senderChatMessage).subscribe();
+  }
+
+
+  private login = () => {
+    var user = {
+      Username: "fred",
+      Password: "123",
+    };
+
+    var result = this.http.post('http://localhost:5000/api/login', user).toPromise().then(this.extractData).catch(this.handleErrorPromise);
+
+    return result;
+  }
+
+  extractData(res: Response) {
+    let body = res.json();
+    return body || {};
+  }
+  handleErrorPromise(error: Response | any) {
+    console.error(error.message || error);
+    return Promise.reject(error.message || error);
   }
 }

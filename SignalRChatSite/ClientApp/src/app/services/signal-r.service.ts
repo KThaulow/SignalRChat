@@ -13,9 +13,9 @@ export class SignalRService {
 
   private hubConnection: signalR.HubConnection
 
-  public startConnection = () => {
+  public startConnection = (loginToken: string) => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5000/chart')
+      .withUrl('http://localhost:5000/chart', { accessTokenFactory: () => loginToken })
       .build();
 
     this.hubConnection
