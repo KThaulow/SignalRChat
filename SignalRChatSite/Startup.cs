@@ -38,36 +38,36 @@ namespace SignalRChartSite
 
 			var key = Encoding.ASCII.GetBytes("testSecretKey");
 
-			services.AddAuthentication(o =>
-			{
-				o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			})
-			.AddJwtBearer(options => {
-				options.Audience = "SignalRChat";
-				options.Authority = "http://localhost:5000";
-				options.RequireHttpsMetadata = false;
-				options.TokenValidationParameters = new TokenValidationParameters
-				{
-					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(key),
-				};
-				options.Events = new JwtBearerEvents
-				{
-					OnMessageReceived = context =>
-					{
-						var accessToken = context.Request.Query["access_token"];
+			//services.AddAuthentication(o =>
+			//{
+			//	o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+			//	o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			//})
+			//.AddJwtBearer(options => {
+			//	options.Audience = "SignalRChat";
+			//	options.Authority = "http://localhost:5000";
+			//	options.RequireHttpsMetadata = false;
+			//	options.TokenValidationParameters = new TokenValidationParameters
+			//	{
+			//		ValidateIssuerSigningKey = true,
+			//		IssuerSigningKey = new SymmetricSecurityKey(key),
+			//	};
+			//	options.Events = new JwtBearerEvents
+			//	{
+			//		OnMessageReceived = context =>
+			//		{
+			//			var accessToken = context.Request.Query["access_token"];
 
-						Console.WriteLine("accessToken");
+			//			Console.WriteLine("accessToken");
 
-						if (string.IsNullOrEmpty(accessToken) == false)
-						{
-							context.Token = accessToken;
-						}
-						return Task.CompletedTask;
-					}
-				};
-			});
+			//			if (string.IsNullOrEmpty(accessToken) == false)
+			//			{
+			//				context.Token = accessToken;
+			//			}
+			//			return Task.CompletedTask;
+			//		}
+			//	};
+			//});
 
 			services.AddSignalR();
 
@@ -94,7 +94,7 @@ namespace SignalRChartSite
 				app.UseHsts();
 			}
 
-			app.UseAuthentication();
+			//app.UseAuthentication();
 
 			//app.UseHttpsRedirection();
 			app.UseCors("CorsPolicy");

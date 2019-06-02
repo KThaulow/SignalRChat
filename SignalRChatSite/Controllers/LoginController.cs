@@ -12,7 +12,7 @@ using SignalRChatSite.Models;
 namespace SignalRChatSite.Controllers
 {
 	[Route("api/[controller]")]
-	public class LoginController : Controller
+	public class LoginController : ControllerBase
 	{
 
 		private readonly IEnumerable<User> _users = new List<User>
@@ -28,7 +28,8 @@ namespace SignalRChatSite.Controllers
 		{
 			if (CheckUser(user.Username, user.Password))
 			{
-				return JwtManager.GenerateToken(user.Username);
+				var token = JwtManager.GenerateToken(user.Username);
+				return token;
 			}
 
 			throw new System.Web.Http.HttpResponseException(System.Net.HttpStatusCode.Unauthorized);

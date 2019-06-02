@@ -14,6 +14,9 @@ export class SignalRService {
   private hubConnection: signalR.HubConnection
 
   public startConnection = (loginToken: string) => {
+
+    console.log('Starting connection with token ' + loginToken);
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:5000/chart', { accessTokenFactory: () => loginToken })
       .build();
@@ -33,7 +36,7 @@ export class SignalRService {
   }
 
   public addChatMessageListener = (identifier: string) => {
-    console.log("Started data listener");
+    console.log("Started chat message listener");
     this.hubConnection.on('chatmessage', (message) => {
       console.log("Received chat message");
       this.chatMessage = message;

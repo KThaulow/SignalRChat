@@ -11,10 +11,15 @@ export class AppComponent {
   constructor(public signalRService: SignalRService, private http: HttpClient) { }
 
   ngOnInit() {
+    var tokenPromise = this.login('fred', '123');
+    tokenPromise.then(e => this.startConnection(e));
+  }
 
-    var token = this.login();
+  private startConnection = (loginToken: string) => {
+    console.log('Found logintoken: ' + loginToken);
 
-    this.signalRService.startConnection("");
+    this.signalRService.startConnection(loginToken);
+
     this.signalRService.addTransferChartDataListener();
     this.startHttpRequest();
 
@@ -41,23 +46,12 @@ export class AppComponent {
   }
 
 
-  private login = () => {
+  private login = (username: string, password: string) => {
     var user = {
-      Username: "fred",
-      Password: "123",
+      Username: username,
+      Password: password,
     };
 
-    var result = this.http.post('http://localhost:5000/api/login', user).toPromise().then(this.extractData).catch(this.handleErrorPromise);
-
-    return result;
-  }
-
-  extractData(res: Response) {
-    let body = res.json();
-    return body || {};
-  }
-  handleErrorPromise(error: Response | any) {
-    console.error(error.message || error);
-    return Promise.reject(error.message || error);
+    return this.http.post<string>('http://localhost:5000/api/login', user, { responseType: 'text' as 'json' }).toPromise();
   }
 }
