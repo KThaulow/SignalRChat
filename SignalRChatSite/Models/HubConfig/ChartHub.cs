@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SignalRChartSite.Models.HubConfig
 {
-	//[Authorize]
+	[Authorize]
 	public class ChartHub : Hub
 	{
 		public Task SendToAll(string message)

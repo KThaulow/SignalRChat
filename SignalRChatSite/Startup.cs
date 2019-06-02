@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SignalRChartSite.Models.HubConfig;
+using SignalRChatSite.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,14 +37,15 @@ namespace SignalRChartSite
 					.AllowCredentials());
 			});
 
-			var key = Encoding.ASCII.GetBytes("testSecretKey");
+			var key = Convert.FromBase64String(JwtManager.Secret);
 
 			//services.AddAuthentication(o =>
 			//{
 			//	o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 			//	o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			//})
-			//.AddJwtBearer(options => {
+			//.AddJwtBearer(options =>
+			//{
 			//	options.Audience = "SignalRChat";
 			//	options.Authority = "http://localhost:5000";
 			//	options.RequireHttpsMetadata = false;
@@ -68,6 +70,24 @@ namespace SignalRChartSite
 			//		}
 			//	};
 			//});
+
+			services.AddAuthentication(x =>
+			{
+				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(x =>
+			{
+				x.RequireHttpsMetadata = false;
+				x.SaveToken = false;
+				x.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(key),
+					ValidateIssuer = false,
+					ValidateAudience = false
+				};
+			});
+
 
 			services.AddSignalR();
 
@@ -94,7 +114,7 @@ namespace SignalRChartSite
 				app.UseHsts();
 			}
 
-			//app.UseAuthentication();
+			app.UseAuthentication();
 
 			//app.UseHttpsRedirection();
 			app.UseCors("CorsPolicy");
