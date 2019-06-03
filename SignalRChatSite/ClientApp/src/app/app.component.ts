@@ -18,31 +18,36 @@ export class AppComponent {
   private startConnection = (loginToken: string) => {
     console.log('Found logintoken: ' + loginToken);
 
-    this.signalRService.startConnection(loginToken);
+    this.signalRService.startConnection(loginToken)
+      .then(e => {
+        console.log('Started connection');
 
-    this.signalRService.addTransferChartDataListener();
-    this.startHttpRequest();
+        this.signalRService.addTransferChartDataListener();
+        this.startHttpRequest();
 
-    this.signalRService.addChatMessageListener('kristian');
-    this.sendMessage();
+        this.signalRService.addChatMessageListener('kristian1');
+        this.sendMessage();
+      })
+      .catch(err => console.log('Could not start connection: ' + err));
   }
 
-
   private startHttpRequest = () => {
-    this.http.get('http://localhost:5000/api/chart')
+    this.http.get('https://localhost:5001/api/chart')
       .subscribe(res => {
         console.log(res);
       })
   }
 
   private sendMessage = () => {
+    console.log('Sending message');
+
     var senderChatMessage = {
       Sender: "Tom",
       Receiver: "Hanks",
       Message: "Message"
     };
 
-    this.http.post('http://localhost:5000/api/chat/sendmessage', senderChatMessage).subscribe();
+    this.http.post('https://localhost:5001/api/chat/sendmessage', senderChatMessage).subscribe();
   }
 
 
@@ -52,6 +57,6 @@ export class AppComponent {
       Password: password,
     };
 
-    return this.http.post<string>('http://localhost:5000/api/login', user, { responseType: 'text' as 'json' }).toPromise();
+    return this.http.post<string>('https://localhost:5001/api/login', user, { responseType: 'text' as 'json' }).toPromise();
   }
 }

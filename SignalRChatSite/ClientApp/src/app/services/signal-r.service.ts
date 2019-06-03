@@ -10,21 +10,17 @@ import { Chatmessage } from '../interfaces/chatmessage';
 export class SignalRService {
   public data: ChartModel[];
   public chatMessage: Chatmessage;
-
   private hubConnection: signalR.HubConnection
 
   public startConnection = (loginToken: string) => {
-
     console.log('Starting connection with token ' + loginToken);
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5000/chart', { accessTokenFactory: () => loginToken })
+      .withUrl('https://localhost:5001/chart', { accessTokenFactory: () => loginToken })
       .build();
 
-    this.hubConnection
-      .start()
-      .then(() => console.log('Connection started'))
-      .catch(err => console.log('Error while starting connection: ' + err))
+    return this.hubConnection
+      .start();
   }
 
   public addTransferChartDataListener = () => {
