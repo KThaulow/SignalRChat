@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --ssl --hmr --o --port=4200 &REM",
+    "start": "ng serve --ssl --ssl-key ./ssl/server.key  --ssl-cert ./ssl/server.crt --hmr --o --port=4200 &REM",
     "build": "ng build",
     "build:ssr": "ng run SignalRChartSite:server:dev",
     "test": "ng test",
