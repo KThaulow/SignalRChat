@@ -39,38 +39,6 @@ namespace SignalRChartSite
 
 			var key = Convert.FromBase64String(JwtManager.Secret);
 
-			//services.AddAuthentication(o =>
-			//{
-			//	o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-			//	o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			//})
-			//.AddJwtBearer(options =>
-			//{
-			//	options.Audience = "SignalRChat";
-			//	options.Authority = "http://localhost:5000";
-			//	options.RequireHttpsMetadata = false;
-			//	options.TokenValidationParameters = new TokenValidationParameters
-			//	{
-			//		ValidateIssuerSigningKey = true,
-			//		IssuerSigningKey = new SymmetricSecurityKey(key),
-			//	};
-			//	options.Events = new JwtBearerEvents
-			//	{
-			//		OnMessageReceived = context =>
-			//		{
-			//			var accessToken = context.Request.Query["access_token"];
-
-			//			Console.WriteLine("accessToken");
-
-			//			if (string.IsNullOrEmpty(accessToken) == false)
-			//			{
-			//				context.Token = accessToken;
-			//			}
-			//			return Task.CompletedTask;
-			//		}
-			//	};
-			//});
-
 			services.AddAuthentication(x =>
 			{
 				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
