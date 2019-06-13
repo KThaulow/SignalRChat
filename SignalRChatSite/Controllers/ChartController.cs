@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SignalRChartSite.Models;
@@ -15,9 +16,9 @@ namespace SignalRChatSite.Controllers
 	[ApiController]
 	public class ChartController : ControllerBase
 	{
-		private IHubContext<ChartHub> _hub;
+		private IHubContext<ChatHub> _hub;
 
-		public ChartController(IHubContext<ChartHub> hub)
+		public ChartController(IHubContext<ChatHub> hub)
 		{
 			_hub = hub;
 		}

@@ -16,9 +16,9 @@ namespace SignalRChatSite.Controllers
 	[Route("api/[controller]")]
 	public class ChatController : ControllerBase
 	{
-		private IHubContext<ChartHub> _hub;
+		private IHubContext<ChatHub> _hub;
 
-		public ChatController(IHubContext<ChartHub> hub)
+		public ChatController(IHubContext<ChatHub> hub)
 		{
 			_hub = hub;
 		}

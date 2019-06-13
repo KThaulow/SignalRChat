@@ -23,19 +23,11 @@ export class AppComponent {
         console.log('Started connection');
 
         this.signalRService.addTransferChartDataListener();
-        this.startHttpRequest();
 
         this.signalRService.addChatMessageListener('kristian1');
         this.sendMessage();
       })
       .catch(err => console.log('Could not start connection: ' + err));
-  }
-
-  private startHttpRequest = () => {
-    this.http.get('https://localhost:5001/api/chart')
-      .subscribe(res => {
-        console.log(res);
-      })
   }
 
   private sendMessage = () => {

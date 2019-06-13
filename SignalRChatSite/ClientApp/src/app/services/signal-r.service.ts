@@ -16,7 +16,7 @@ export class SignalRService {
     console.log('Starting connection with token ' + loginToken);
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:5001/chart', { accessTokenFactory: () => loginToken })
+      .withUrl('https://localhost:5001/hubs/chat', { accessTokenFactory: () => loginToken })
       .build();
 
     return this.hubConnection
@@ -26,6 +26,14 @@ export class SignalRService {
   public addTransferChartDataListener = () => {
     console.log("Started data listener");
     this.hubConnection.on('transferchartdata', (data) => {
+      this.data = data;
+      console.log(data);
+    });
+  }
+
+  public addScheduledDataListener = () => {
+    console.log("Started scheduled data listener");
+    this.hubConnection.on('scheduledDataProvider', (data) => {
       this.data = data;
       console.log(data);
     });

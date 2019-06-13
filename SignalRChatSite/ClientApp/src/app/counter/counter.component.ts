@@ -22,7 +22,7 @@ export class CounterComponent {
     this.nick = window.prompt('Your name:', 'John');
 
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5000/chart')
+      .withUrl('https://localhost:5001/hubs/chat')
       .build();
 
     this._hubConnection

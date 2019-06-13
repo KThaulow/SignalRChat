@@ -39,20 +39,41 @@ namespace SignalRChartSite
 
 			var key = Convert.FromBase64String(JwtManager.Secret);
 
-			services.AddAuthentication(x =>
+			services.AddAuthentication(options =>
 			{
-				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			}).AddJwtBearer(x =>
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(options =>
 			{
-				x.RequireHttpsMetadata = false;
-				x.SaveToken = false;
-				x.TokenValidationParameters = new TokenValidationParameters
+				options.RequireHttpsMetadata = false;
+				options.SaveToken = false;
+				options.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuerSigningKey = true,
 					IssuerSigningKey = new SymmetricSecurityKey(key),
 					ValidateIssuer = false,
 					ValidateAudience = false
+				};
+				// We have to hook the OnMessageReceived event in order to
+				// allow the JWT authentication handler to read the access
+				// token from the query string when a WebSocket or 
+				// Server-Sent Events request comes in.
+				options.Events = new JwtBearerEvents
+				{
+					OnMessageReceived = context =>
+					{
+						var accessToken = context.Request.Query["access_token"];
+
+						// If the request is for our hub...
+						var path = context.HttpContext.Request.Path;
+						if (!string.IsNullOrEmpty(accessToken) &&
+							(path.StartsWithSegments("/hubs/chat")))
+						{
+							// Read the token out of the query string
+							context.Token = accessToken;
+						}
+						return Task.CompletedTask;
+					}
 				};
 			});
 
@@ -91,7 +112,7 @@ namespace SignalRChartSite
 
 			app.UseSignalR(routes =>
 			{
-				routes.MapHub<ChartHub>("/chart");
+				routes.MapHub<ChatHub>("/hubs/chat");
 			});
 
 
