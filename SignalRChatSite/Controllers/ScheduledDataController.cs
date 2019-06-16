@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SignalRChartSite.Models;
 using SignalRChartSite.Models.HubConfig;
+using SignalRChatSite.Controllers.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,11 +26,9 @@ namespace SignalRChatSite.Controllers
 
 		// POST api/<controller>
 		[HttpPost]
-		public void Post([FromBody]string connectionId)
+		public void Post([FromBody]Client client)
 		{
-			string name = Context.User.Identity.Name;
-
-			var timerManager = new TimerManager(() => _hub.Clients.Client(connectionId).SendAsync("scheduledDataProvider", DataManager.GetData()));
+			var timerManager = new TimerManager(() => _hub.Clients.Group(client.ClientIdentifier).SendAsync("scheduledDataProvider", DataManager.GetData()));
 		}
 	}
 }

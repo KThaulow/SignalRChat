@@ -14,6 +14,16 @@ namespace SignalRChartSite.Models.HubConfig
 	{
 		private readonly static ConnectionMapping<string> _connections = new ConnectionMapping<string>();
 
+		public Task RegisterClient(string clientIdentifier)
+		{
+			return Groups.AddToGroupAsync(Context.ConnectionId, clientIdentifier);
+		}
+
+		public Task UnregisterClient(string clientIdentifier)
+		{
+			return Groups.RemoveFromGroupAsync(Context.ConnectionId, clientIdentifier);
+		}
+
 		public Task SendToAll(string message)
 		{
 			return Clients.All.SendAsync("SendMessage", message);

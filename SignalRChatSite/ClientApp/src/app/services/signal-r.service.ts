@@ -23,6 +23,20 @@ export class SignalRService {
       .start();
   }
 
+  public registerClient = (clientIdentifier: string) => {
+    console.log("Registering client");
+
+    return this.hubConnection.send('RegisterClient', clientIdentifier);
+  }
+
+  public unregisterClient = (clientIdentifier: string) => {
+    console.log("Unregistering client");
+
+    this.hubConnection.send('UnregisterClient', clientIdentifier)
+      .then(() => console.log('unregistered client'))
+      .catch(err => console.error(err));
+  }
+
   public addTransferChartDataListener = () => {
     console.log("Started data listener");
     this.hubConnection.on('transferchartdata', (data) => {
@@ -41,6 +55,7 @@ export class SignalRService {
 
   public addChatMessageListener = (identifier: string) => {
     console.log("Started chat message listener");
+
     this.hubConnection.on('chatmessage', (message) => {
       console.log("Received chat message");
       this.chatMessage = message;
