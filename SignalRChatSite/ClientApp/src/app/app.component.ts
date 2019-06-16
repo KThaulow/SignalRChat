@@ -28,9 +28,7 @@ export class AppComponent {
         console.log('Started connection');
         this.registerClient();
 
-        // this.signalRService.addTransferChartDataListener();
-        // this.signalRService.addChatMessageListener('kristian1');
-        // this.sendMessage();
+        this.signalRService.addScheduledDataListener();
       })
       .catch(err => console.log('Could not start connection: ' + err));
   }
@@ -39,8 +37,6 @@ export class AppComponent {
     this.signalRService.registerClient('clientIdentifier')
       .then(() => {
         console.log('Registered client');
-        this.signalRService.addScheduledDataListener();
-        this.dataproviderService.startDataProvider('clientIdentifier');
       })
       .catch(err => console.error(err));
   }

@@ -26,7 +26,7 @@ namespace SignalRChartSite.Models
 		{
 			_action();
 
-			if ((DateTime.Now - TimerStarted).Seconds > 60)
+			if ((DateTime.Now - TimerStarted).Seconds > 10)
 			{
 				_timer.Dispose();
 			}

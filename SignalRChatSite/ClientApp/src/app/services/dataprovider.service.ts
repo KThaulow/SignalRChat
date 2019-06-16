@@ -8,11 +8,8 @@ export class DataproviderService {
 
   constructor(private http: HttpClient) { }
 
-  private startDataProvider(clientIdentifier: string) {
+  public startDataProvider(clientIdentifier: string) {
     console.log('Starting data provider');
-
-    var accessToken = localStorage.getItem('access_token');
-    console.log(accessToken);
 
     var client = {
       ClientIdentifier: clientIdentifier,

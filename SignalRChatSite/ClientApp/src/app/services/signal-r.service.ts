@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from "@aspnet/signalr";
 import { ChartModel } from '../interfaces/chartmodel';
 import { Chatmessage } from '../interfaces/chatmessage';
+// import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,10 @@ export class SignalRService {
   public data: ChartModel[];
   public chatMessage: Chatmessage;
   private hubConnection: signalR.HubConnection
+
+  // constructor() {
+  //   this.data = [{ label: 'hejsa1' }, { label: 'hejsa2' }];
+  // }
 
   public startConnection = (loginToken: string) => {
     console.log('Starting connection with token ' + loginToken);
@@ -45,6 +50,18 @@ export class SignalRService {
     });
   }
 
+  // public getData(): any {
+  //   const dataObservable = new Observable(observer => {
+  //     console.log('observe');
+  //     setTimeout(() => {
+  //       console.log('next');
+  //       observer.next(this.data);
+  //     }, 1000);
+  //   });
+
+  //   return dataObservable;
+  // }
+
   public addScheduledDataListener = () => {
     console.log("Started scheduled data listener");
     this.hubConnection.on('scheduledDataProvider', (data) => {
@@ -52,6 +69,19 @@ export class SignalRService {
       console.log(data);
     });
   }
+
+  // public registerScheduledDataListener(): Observable<ChartModel[]> {
+  //   console.log("Started scheduled data listener");
+  //   this.hubConnection.on('scheduledDataProvider', (data) => {
+  //     this.data = data;
+  //   });
+
+  //   return of(this.data);
+  // }
+
+  // public getData1(): Observable<ChartModel[]> {
+  //   return of(this.data);
+  // }
 
   public addChatMessageListener = (identifier: string) => {
     console.log("Started chat message listener");
