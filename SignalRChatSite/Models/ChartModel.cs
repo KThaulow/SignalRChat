@@ -8,5 +8,7 @@ namespace SignalRChartSite.Models
 	public class ChartModel
 	{
 		public string Label { get; set; }
+		public DateTime Date { get; set; }
+		public double Number { get; set; }
 	}
 }

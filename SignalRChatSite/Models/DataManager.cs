@@ -12,10 +12,10 @@ namespace SignalRChartSite.Models
 			var r = new Random((int)DateTime.UtcNow.Ticks);
 			return new List<ChartModel>()
 			{
-			   new ChartModel { Label = $"Data-{r.Next(100)}" },
-			   new ChartModel { Label = $"Data-{r.Next(100)}" },
-			   new ChartModel { Label = $"Data-{r.Next(100)}" },
-			   new ChartModel { Label = $"Data-{r.Next(100)}" }
+			   new ChartModel { Label = $"Data-{r.Next(100)}", Date = DateTime.UtcNow.AddHours(r.Next(100)), Number =  r.Next(1000)},
+			   new ChartModel { Label = $"Data-{r.Next(100)}", Date = DateTime.UtcNow.AddHours(r.Next(100)), Number =  r.Next(1000) },
+			   new ChartModel { Label = $"Data-{r.Next(100)}", Date = DateTime.UtcNow.AddHours(r.Next(100)), Number =  r.Next(1000) },
+			   new ChartModel { Label = $"Data-{r.Next(100)}", Date = DateTime.UtcNow.AddHours(r.Next(100)), Number =  r.Next(1000) }
 			};
 		}
 	}
