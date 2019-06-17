@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import * as signalR from "@aspnet/signalr";
 import { ChartModel } from '../interfaces/chartmodel';
 import { Chatmessage } from '../interfaces/chatmessage';
-// import { Observable, of } from 'rxjs';
+import { Observable, of, observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,15 @@ export class SignalRService {
   public data: ChartModel[];
   public chatMessage: Chatmessage;
   private hubConnection: signalR.HubConnection
+  private scheduledDataSubject = new BehaviorSubject<ChartModel[]>(this.data);
+  public scheduledDataItem$ = this.scheduledDataSubject.asObservable();
 
-  // constructor() {
-  //   this.data = [{ label: 'hejsa1' }, { label: 'hejsa2' }];
-  // }
+  constructor() {
+    this.data = [];
+  }
 
   public startConnection = (loginToken: string) => {
-    console.log('Starting connection with token ' + loginToken);
+    console.log('Starting connection');
 
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('https://localhost:5001/hubs/chat', { accessTokenFactory: () => loginToken })
@@ -50,38 +52,13 @@ export class SignalRService {
     });
   }
 
-  // public getData(): any {
-  //   const dataObservable = new Observable(observer => {
-  //     console.log('observe');
-  //     setTimeout(() => {
-  //       console.log('next');
-  //       observer.next(this.data);
-  //     }, 1000);
-  //   });
-
-  //   return dataObservable;
-  // }
-
   public addScheduledDataListener = () => {
     console.log("Started scheduled data listener");
+
     this.hubConnection.on('scheduledDataProvider', (data) => {
-      this.data = data;
-      console.log(data);
+      this.scheduledDataSubject.next(data as ChartModel[]);
     });
   }
-
-  // public registerScheduledDataListener(): Observable<ChartModel[]> {
-  //   console.log("Started scheduled data listener");
-  //   this.hubConnection.on('scheduledDataProvider', (data) => {
-  //     this.data = data;
-  //   });
-
-  //   return of(this.data);
-  // }
-
-  // public getData1(): Observable<ChartModel[]> {
-  //   return of(this.data);
-  // }
 
   public addChatMessageListener = (identifier: string) => {
     console.log("Started chat message listener");

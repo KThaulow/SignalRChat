@@ -22,7 +22,7 @@
 <button (click)="startDataRetrieval()">Start!</button>
 
 <ul>
-  <li *ngFor="let dataItem of dataItems">{{dataItem.label | async}}</li>
+  <li *ngFor="let dataItem of dataItems$">{{dataItem.label}}</li>
 </ul>
 
 <p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that

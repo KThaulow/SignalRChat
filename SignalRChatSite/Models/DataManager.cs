@@ -9,14 +9,15 @@ namespace SignalRChartSite.Models
 	{
 		public static List<ChartModel> GetData()
 		{
-			var r = new Random();
+			var r = new Random((int)DateTime.UtcNow.Ticks);
 			return new List<ChartModel>()
 			{
-			   new ChartModel { Label = "Data1" },
-			   new ChartModel { Label = "Data2" },
-			   new ChartModel { Label = "Data3" },
-			   new ChartModel { Label = "Data4" }
+			   new ChartModel { Label = $"Data-{r.Next(100)}" },
+			   new ChartModel { Label = $"Data-{r.Next(100)}" },
+			   new ChartModel { Label = $"Data-{r.Next(100)}" },
+			   new ChartModel { Label = $"Data-{r.Next(100)}" }
 			};
 		}
 	}
 }
+	

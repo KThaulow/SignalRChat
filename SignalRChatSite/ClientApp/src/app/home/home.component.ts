@@ -10,26 +10,11 @@ import { Observable } from 'rxjs';
 })
 export class HomeComponent {
 
-  private dataItems$: Observable<ChartModel[]>;
-
+  private dataItems$: ChartModel[];
 
   constructor(public dataproviderService: DataproviderService, signalRService: SignalRService) {
-    // this.dataItems = [{ label: 'hejsa' }, { label: 'hejsa2' }];
-    // this.dataItems = signalRService.data;
-
-
-    // this.dataItems$ = signalRService.getData1();
-
-    // this.dataItems currentValue = signalRService.registerScheduledDataListener().pipe(share());
-
-    // const dataObservable = signalRService.getData();
-    // dataObservable.subscribe((updatedData: ChartModel[]) => {
-    //   console.log(updatedData);
-    //   this.dataItems = updatedData;
-    // });
+    signalRService.scheduledDataItem$.subscribe(item => this.dataItems$ = item);
   }
-
-
 
   startDataRetrieval() {
     this.dataproviderService.startDataProvider('clientIdentifier');

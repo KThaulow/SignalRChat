@@ -21,8 +21,6 @@ export class AppComponent {
   }
 
   private startConnection = (loginToken: string) => {
-    console.log('Found logintoken: ' + loginToken);
-
     this.signalRService.startConnection(loginToken)
       .then(e => {
         console.log('Started connection');
